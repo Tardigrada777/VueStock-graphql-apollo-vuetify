@@ -49,7 +49,9 @@
     <!-- App content -->
     <v-content>
       <v-container class="mt-4">
-        <router-view />
+        <transition name="fade" mode="out-in">
+          <router-view />
+        </transition>
       </v-container>
     </v-content>
   </v-app>
@@ -104,5 +106,15 @@ a {
       text-decoration: none;
     }
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>
