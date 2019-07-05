@@ -2,7 +2,7 @@
   <v-container text-xs-center>
     <!-- Signin Form -->
     <v-layout row wrap>
-      <v-flex xs12 sm8 offset-sm2>
+      <v-flex xs12 sm6 offset-sm3>
         <v-card class="mt-5" color="white">
           <v-container>
             <!-- Signin Title -->
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Signin",
@@ -57,6 +57,17 @@ export default {
       username: "",
       password: ""
     };
+  },
+  computed: {
+    ...mapGetters(["user"])
+  },
+  watch: {
+    user(value) {
+      // if user value changes redirect to home page
+      if (value) {
+        this.$router.push("/");
+      }
+    }
   },
   methods: {
     ...mapActions(["signinUser"]),
