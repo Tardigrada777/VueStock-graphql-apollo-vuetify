@@ -5,7 +5,12 @@ import router from "./router";
 Vue.use(Vuex);
 
 import { defaultClient as apolloClient } from "./main.js";
-import { GET_POSTS, SINGIN_USER, GET_CURRENT_USER } from "./queries.js";
+import {
+  GET_POSTS,
+  SINGIN_USER,
+  GET_CURRENT_USER,
+  SIGNUP_USER
+} from "./queries.js";
 
 export default new Vuex.Store({
   state: {
@@ -93,6 +98,29 @@ export default new Vuex.Store({
 
       // redirect home
       router.push("/");
+    },
+    signupUser: ({ commit }, { username, email, password }) => {
+      commit("SET_ERROR", null);
+      commit("SET_LOADING", true);
+      apolloClient
+        .mutate({
+          mutation: SIGNUP_USER,
+          variables: {
+            username,
+            email,
+            password
+          }
+        })
+        .then(({ data }) => {
+          localStorage.setItem("token", data.signupUser.token);
+          commit("SET_LOADING", false);
+          router.go();
+        })
+        .catch(err => {
+          commit("SET_LOADING", false);
+          commit("SET_ERROR", err);
+          console.error(err);
+        });
     }
   },
   getters: {

@@ -53,7 +53,7 @@
               <v-layout row>
                 <v-flex xs12>
                   <v-btn
-                    :disabled="!isFormValid"
+                    :disabled="!isFormValid || isLoading"
                     :loading="isLoading"
                     color="success"
                     type="submit"
