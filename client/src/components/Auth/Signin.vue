@@ -19,10 +19,22 @@
               </v-flex>
             </v-layout>
 
-            <v-form @submit.prevent="handleSigninUser" class="py-4 px-4">
+            <v-form
+              v-model="isFormValid"
+              lazy-validation
+              ref="form"
+              @submit.prevent="handleSigninUser"
+              class="py-4 px-4"
+            >
               <v-layout row>
                 <v-flex xs12>
-                  <v-text-field v-model="username" prepend-icon="face" type="text" label="Username"></v-text-field>
+                  <v-text-field
+                    :rules="usernameRules"
+                    v-model="username"
+                    prepend-icon="face"
+                    type="text"
+                    label="Username"
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
 
@@ -30,6 +42,7 @@
                 <v-flex xs12>
                   <v-text-field
                     v-model="password"
+                    :rules="passwordRules"
                     prepend-icon="extension"
                     type="password"
                     label="Password"
@@ -39,7 +52,12 @@
 
               <v-layout row>
                 <v-flex xs12>
-                  <v-btn :loading="isLoading" color="success" type="submit">
+                  <v-btn
+                    :disabled="!isFormValid"
+                    :loading="isLoading"
+                    color="success"
+                    type="submit"
+                  >
                     <template v-slot:loader>
                       <span class="custom-loader">
                         <v-icon light>cached</v-icon>
@@ -68,8 +86,21 @@ export default {
   name: "Signin",
   data() {
     return {
+      isFormValid: true,
       username: "",
-      password: ""
+      password: "",
+      usernameRules: [
+        // check if username in input
+        username => !!username || "Username is required",
+        // make sure username is less then 10 characters
+        username =>
+          username.length < 10 || "Username must be less then 10 characters"
+      ],
+      passwordRules: [
+        password => !!password || "Username is required",
+        password =>
+          password.length >= 4 || "Password must be at least 4 characters"
+      ]
     };
   },
   computed: {
@@ -86,10 +117,12 @@ export default {
   methods: {
     ...mapActions(["signinUser"]),
     handleSigninUser() {
-      this.signinUser({
-        username: this.username,
-        password: this.password
-      });
+      if (this.$refs.form.validate()) {
+        this.signinUser({
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   }
 };
