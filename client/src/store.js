@@ -54,6 +54,8 @@ export default new Vuex.Store({
         });
     },
     signinUser: ({ commit }, { username, password }) => {
+      // clear token before signin
+      localStorage.setItem("token", "");
       apolloClient
         .mutate({
           mutation: SINGIN_USER,
@@ -69,6 +71,19 @@ export default new Vuex.Store({
         .catch(err => {
           console.error(err);
         });
+    },
+    signoutUser: async ({ commit }) => {
+      // clear user in state
+      commit("SET_USER", null);
+
+      // remove token in localstorage
+      localStorage.setItem("token", "");
+
+      // end session
+      await apolloClient.resetStore();
+
+      // redirect home
+      router.push("/");
     }
   },
   getters: {
