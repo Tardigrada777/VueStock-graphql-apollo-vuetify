@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import AddPost from "./components/Posts/AddPost.vue";
 import Posts from "./components/Posts/Posts.vue";
+import Post from "./components/Posts/Post.vue";
 
 import Profile from "./components/Auth/Profile.vue";
 import Signin from "./components/Auth/Signin.vue";
@@ -27,9 +28,16 @@ export default new Router({
       component: Posts
     },
     {
+      path: "/posts/:postId",
+      name: "Post",
+      component: Post,
+      props: true
+    },
+    {
       path: "/post/add",
       name: "AddPost",
-      component: AddPost
+      component: AddPost,
+      beforeEnter: AuthGuard
     },
     {
       path: "/profile",
