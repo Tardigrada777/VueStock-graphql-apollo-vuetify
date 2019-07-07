@@ -107,6 +107,29 @@ module.exports = {
       return {
         token: createToken(newUser, process.env.SECRET, "1hr")
       };
+    },
+    addPostMessage: async (_, { messageBody, userId, postId }, { Post }) => {
+      const newMessage = {
+        messageBody,
+        messageUser: userId
+      };
+
+      const post = await Post.findOneAndUpdate(
+        // Find Post by id
+        { _id: postId },
+        // ADd a new message to the messages array
+        {
+          $push: {
+            messages: { $each: [newMessage], $position: 0 }
+          }
+        },
+        // return fresh doc after update
+        { new: true }
+      ).populate({
+        path: "messages.messageUser",
+        model: "User"
+      });
+      return post.messages[0];
     }
   }
 };
