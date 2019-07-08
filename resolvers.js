@@ -102,6 +102,10 @@ module.exports = {
       }).save();
       return newPost;
     },
+    deleteUserPost: async (_, { postId }, { Post }) => {
+      const post = await Post.findOneAndRemove({ _id: postId });
+      return post;
+    },
     updateUserPost: async (
       _,
       { postId, userId, title, description, imageUrl, categories },
