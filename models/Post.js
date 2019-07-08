@@ -48,4 +48,9 @@ const PostSchema = new Mongoose.Schema({
   ]
 });
 
+// create index to search on all fields of posts
+PostSchema.index({
+  "$**": "text"
+});
+
 module.exports = Mongoose.model("Post", PostSchema);

@@ -42,7 +42,14 @@
 
       <v-spacer></v-spacer>
       <!-- Search input -->
-      <v-text-field flex prepend-icon="search" placeholder="Search posts" color="white"></v-text-field>
+      <v-text-field
+        v-model="searchTerm"
+        @input="handleSearchPosts"
+        flex
+        prepend-icon="search"
+        placeholder="Search posts"
+        color="white"
+      ></v-text-field>
 
       <v-spacer></v-spacer>
       <!-- Horizontal Navbar Links -->
@@ -113,7 +120,8 @@ export default {
       sideNav: false,
       authSnackbar: false,
       authErrorSnackbar: false,
-      badgeAnimated: false
+      badgeAnimated: false,
+      searchTerm: ""
     };
   },
   computed: {
@@ -169,12 +177,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["signoutUser"]),
+    ...mapActions(["signoutUser", "searchPosts"]),
     toggleSideBar() {
       this.sideNav = !this.sideNav;
     },
     handleSignoutUser() {
       this.signoutUser();
+    },
+    handleSearchPosts() {
+      this.searchPosts({ searchTerm: this.searchTerm });
     }
   }
 };
