@@ -6,8 +6,8 @@
         <v-card hover>
           <v-card-title>
             <h1>{{ getPost.title }}</h1>
-            <v-btn @click="handleUnlikePost" large icon v-if="user">
-              <v-icon large color="grey">favorite</v-icon>
+            <v-btn @click="handleToggleLike" large icon v-if="user">
+              <v-icon large :color="checkIfPostLiked(getPost._id) ? 'accent' : 'grey' ">favorite</v-icon>
             </v-btn>
             <h3 class="ml-3 font-weight-thin">{{ getPost.likes }} LIKES</h3>
             <v-spacer></v-spacer>
@@ -122,6 +122,7 @@ export default {
   props: ["postId"],
   data() {
     return {
+      postLiked: false,
       dialog: false,
       messageBody: "",
       isFormValid: true,
@@ -263,10 +264,33 @@ export default {
           this.$store.commit("SET_USER", updatedUser);
         })
         .catch(err => console.error(err));
+    },
+    handleToggleLike() {
+      if (this.postLiked) {
+        this.handleUnlikePost();
+      } else {
+        this.handleLikePost();
+      }
+      this.postLiked = !this.postLiked;
+    },
+    checkIfPostLiked(postId) {
+      // check if user favorites includes post with id postId
+      if (this.userFavorites) {
+        const includes = this.userFavorites.some(fave => {
+          return fave._id === postId;
+        });
+        if (includes) {
+          this.postLiked = true;
+          return true;
+        } else {
+          this.postLiked = false;
+          return false;
+        }
+      }
     }
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "userFavorites"])
   }
 };
 </script>
