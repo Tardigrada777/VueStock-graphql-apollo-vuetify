@@ -141,6 +141,7 @@ export const UPDATE_USER_POST = gql`
   ) {
     updateUserPost(
       postId: $postId
+      userId: $userId
       title: $title
       imageUrl: $imageUrl
       categories: $categories
