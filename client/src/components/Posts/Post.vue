@@ -92,7 +92,7 @@
                     {{ message.messageUser.username }}
                     <span
                       class="grey--text text--lighten-1 hidden-xs-only"
-                    >{{ message.messageDate }}</span>
+                    >{{ getTimeFromNow(message.messageDate )}}</span>
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
 
@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 import {
   GET_POST,
   ADD_POST_MESSAGE,
@@ -145,6 +147,9 @@ export default {
     }
   },
   methods: {
+    getTimeFromNow(time) {
+      return moment(new Date(time)).fromNow();
+    },
     goToPrevPage() {
       this.$router.go(-1);
     },
