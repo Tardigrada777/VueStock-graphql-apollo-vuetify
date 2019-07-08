@@ -27,6 +27,12 @@ type Message {
   messageUser: User!
 }
 
+type LikesFaves {
+  # likes for Post / favorites for User
+  likes: Int
+  favorites: [Post]
+}
+
 type Mutation {
   addPost(
     title: String!
@@ -35,6 +41,8 @@ type Mutation {
     description: String!
     creatorId: ID!
   ): Post!
+  likePost(postId: ID!, username: String!): LikesFaves!
+  unlikePost(postId: ID!, username: String!): LikesFaves!
   addPostMessage(messageBody: String!, userId: ID!, postId: ID!): Message!
   signinUser(username: String!, password: String!): Token
   signupUser(username: String!, email: String!, password: String!): Token
