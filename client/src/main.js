@@ -28,9 +28,6 @@ export const defaultClient = new ApolloClient({
     if (!localStorage.token) {
       localStorage.setItem("token", "");
     }
-
-    console.log("token", localStorage.getItem("token"));
-
     operation.setContext({
       headers: {
         authorization: localStorage.getItem("token")
