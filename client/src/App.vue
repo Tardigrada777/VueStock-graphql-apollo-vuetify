@@ -53,11 +53,11 @@
         </v-btn>
 
         <!-- Profile Button -->
-        <v-btn v-if="user" flat to="/profile">
+        <v-btn v-if="user" flat to="/profile" :class="{ 'bounce': badgeAnimated }">
           <v-icon class="hidden-sm-only" left>account_box</v-icon>
           <v-badge color="accent">
-            <template v-slot:badge>
-              <span>5</span>
+            <template v-if="userFavorites.length" v-slot:badge>
+              <span>{{ userFavorites.length }}</span>
             </template>
             <span>Profile</span>
           </v-badge>
@@ -104,6 +104,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { setTimeout } from "timers";
 
 export default {
   name: "App",
@@ -111,11 +112,12 @@ export default {
     return {
       sideNav: false,
       authSnackbar: false,
-      authErrorSnackbar: false
+      authErrorSnackbar: false,
+      badgeAnimated: false
     };
   },
   computed: {
-    ...mapGetters(["authError", "user"]),
+    ...mapGetters(["authError", "user", "userFavorites"]),
     navItems() {
       let items = [
         { icon: "chat", title: "Posts", link: "/posts" },
@@ -158,6 +160,12 @@ export default {
       if (value !== null) {
         this.authErrorSnackbar = true;
       }
+    },
+    userFavorites(value) {
+      if (value) {
+        this.badgeAnimated = true;
+        setTimeout(() => (this.badgeAnimated = false), 1000);
+      }
     }
   },
   methods: {
@@ -199,5 +207,30 @@ a {
 .fade-enter,
 .fade-leave-active {
   opacity: 0;
+}
+
+// User favorite Animation
+.bounce {
+  animation: bounce 1s both;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%,
+  43% {
+    transform: translate3d(0, -40px, 0);
+  }
+  70% {
+    transform: translate3d(0, -20px, 0);
+  }
+  90% {
+    transform: translate3d(0, -10px, 0);
+  }
 }
 </style>
