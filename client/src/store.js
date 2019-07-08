@@ -67,8 +67,6 @@ export default new Vuex.Store({
           query: GET_POSTS
         })
         .then(({ data }) => {
-          console.log(data);
-
           commit("SET_POSTS", data.getPosts);
           commit("SET_LOADING", false);
         })
@@ -131,7 +129,7 @@ export default new Vuex.Store({
           ]
         })
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
         })
         .catch(err => {
           console.error(err);

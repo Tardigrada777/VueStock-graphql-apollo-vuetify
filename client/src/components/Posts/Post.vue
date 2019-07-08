@@ -18,18 +18,18 @@
 
           <v-tooltip right>
             <span>Click to enlarge image</span>
-            <v-card-media
+            <v-img
               @click="toggleImageDialog"
               slot="activator"
               :src="getPost.imageUrl"
               id="post__image"
-            ></v-card-media>
+            ></v-img>
           </v-tooltip>
 
           <!-- Post Image Dialog-->
           <v-dialog v-model="dialog">
             <v-card>
-              <v-card-media :src="getPost.imageUrl" height="80vh"></v-card-media>
+              <v-img :src="getPost.imageUrl" height="80vh"></v-img>
             </v-card>
           </v-dialog>
 

@@ -4,7 +4,7 @@
     <v-layout class="mt-4" row wrap v-if="infiniteScrollPosts">
       <v-flex xs12 sm6 v-for="post in infiniteScrollPosts.posts" :key="post._id">
         <v-card hover>
-          <v-card-media @click.native="goToPost(post._id)" :src="post.imageUrl" height="30vh" lazy></v-card-media>
+          <v-img @click.native="goToPost(post._id)" :src="post.imageUrl" height="30vh" lazy></v-img>
           <v-card-actions>
             <v-card-title primary>
               <div>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment, { locale } from "moment";
 import { INFINITE_SCROLL_POSTS } from "../../queries";
 
 const pageSize = 2;
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       pageNum: 1,
-      showMoreEnabled: true,
+      // showMoreEnabled: true,
       showPostCreator: false
     };
   },
@@ -80,6 +80,11 @@ export default {
         pageNum: 1,
         pageSize
       }
+    }
+  },
+  computed: {
+    showMoreEnabled() {
+      return this.infiniteScrollPosts && this.infiniteScrollPosts.hasMore;
     }
   },
   methods: {
@@ -98,7 +103,7 @@ export default {
           const newPosts = fetchMoreResult.infiniteScrollPosts.posts;
           const hasMore = fetchMoreResult.infiniteScrollPosts.hasMore;
 
-          this.showMoreEnabled = hasMore;
+          // this.showMoreEnabled = hasMore;
 
           return {
             infiniteScrollPosts: {

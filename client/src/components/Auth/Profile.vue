@@ -5,7 +5,7 @@
       <v-card color="white">
         <v-layout>
           <v-flex xs5>
-            <v-card-media height="125px" contain :src="user.avatar"></v-card-media>
+            <v-img height="125px" contain :src="user.avatar"></v-img>
           </v-flex>
           <v-flex xs7>
             <v-card-title primary-title>
@@ -39,7 +39,7 @@
       <v-layout row wrap>
         <v-flex xs12 sm6 v-for="favorite in userFavorites" :key="favorite._id">
           <v-card class="mt-3 ml-2 mr2" hover>
-            <v-card-media height="30vh" :src="favorite.imageUrl"></v-card-media>
+            <v-img @click="goToPost(favorite._id)" height="30vh" :src="favorite.imageUrl"></v-img>
             <v-card-text>{{ favorite.title }}</v-card-text>
           </v-card>
         </v-flex>
@@ -73,7 +73,7 @@
               <v-icon>delete</v-icon>
             </v-btn>
 
-            <v-card-media :src="post.imageUrl" height="30vh"></v-card-media>
+            <v-img @click="goToPost(post._id)" :src="post.imageUrl" height="30vh"></v-img>
             <v-card-text>{{ post.title }}</v-card-text>
           </v-card>
         </v-flex>
@@ -188,6 +188,9 @@ export default {
   },
   methods: {
     ...mapActions(["getUserPosts", "updateUserPost", "deleteUserPost"]),
+    goToPost(postId) {
+      this.$router.push(`/posts/${postId}`);
+    },
     formatJoinDate(date) {
       return moment(new Date(date)).format("ll");
     },

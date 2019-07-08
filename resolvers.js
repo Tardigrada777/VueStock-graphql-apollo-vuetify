@@ -84,6 +84,7 @@ module.exports = {
       }
       const totalDocs = await Post.countDocuments();
       const hasMore = totalDocs > pageSize * pageNum;
+      console.log("hasMore", hasMore);
       return { posts, hasMore };
     }
   },
