@@ -102,6 +102,29 @@ module.exports = {
       }).save();
       return newPost;
     },
+    updateUserPost: async (
+      _,
+      { postId, userId, title, description, imageUrl, categories },
+      { Post }
+    ) => {
+      const post = await Post.findOneAndUpdate(
+        // find post by postId and userId (createdBy)
+        { _id: postId, createdBy: userId },
+        {
+          $set: {
+            title,
+            imageUrl,
+            categories,
+            description
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      return post;
+    },
     signinUser: async (_, { username, password }, { User }) => {
       const user = await User.findOne({ username });
       if (!user) throw new Error("User not found");
